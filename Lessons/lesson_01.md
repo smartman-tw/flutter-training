@@ -30,7 +30,8 @@
 - **Clone**: 複製存放庫到本地端。
 - **Pull**: 從遠端存放庫拉取最新的程式碼。
 - **Fetch**: 從遠端存放庫拉取最新的分支。
-
+### Git 操作關聯圖
+![alt text](git.png)
 ### VS Code
 - **terminal**: 終端機，可以在 VS Code 中執行指令。
 - **command palette**: 命令面板，可以在 VS Code 中執行指令。
@@ -43,3 +44,4 @@
 - `Ctrl+P`: 開啟檔案。
 - `Ctrl+點擊`: 跳到定義。
 - `Ctrl+~`: 開啟終端機。
+> 更多關於使用 VS Code 開發Flutter的建議請參考 [VSCode Shortcuts by Andrea](https://codewithandrea.com/articles/vscode-shortcuts-extensions-settings-flutter-development/)。
