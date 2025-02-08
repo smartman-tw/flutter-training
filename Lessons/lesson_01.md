@@ -19,6 +19,7 @@
 - **stateless widget**: 無狀態的 widget，不會在 widget 中儲存狀態。
   
 ### 版本控制
+- **Git**: 一個版本控制系統，可以用來追蹤程式碼的變更。
 - **GitHub**: 程式碼存放庫，可以用來儲存程式碼並與他人合作。
 - **Repository**: 存放程式碼的地方。
 - **Branch**: 存放庫中的分支，可以用來分開不同的功能或版本。
@@ -45,3 +46,14 @@
 - `Ctrl+點擊`: 跳到定義。
 - `Ctrl+~`: 開啟終端機。
 > 更多關於使用 VS Code 開發Flutter的建議請參考 [VSCode Shortcuts by Andrea](https://codewithandrea.com/articles/vscode-shortcuts-extensions-settings-flutter-development/)。
+
+
+## Q&A
+1. Q: 分支之間要如何合併?   
+   A: Source Control > 更多選項 (...) > Branches > Merge > 選擇要合併的分支。  
+2. Q: 如何退回到過去的版本? 要如何管理?  
+   A: 可以，Source Control > 更多選項 (...) > Commit > Undo Last Commit。培養 commit 頻繁的習慣可以追蹤變動歷程。
+3. Q: 能不能移除過去以前的某一個 commit?  
+   A: Source Control > GITLENS > 選擇要移除的 commit > 選擇 revert。
+4. Q: 如何檢視Git log輸出?  
+   A: 開啟 terminal (`Ctrl+~`) > 切換到 OUTPUT 頁面 > 下拉選單選擇 Git。
