@@ -45,6 +45,7 @@
 - `Ctrl+P`: 開啟檔案。
 - `Ctrl+點擊`: 跳到定義。
 - `Ctrl+~`: 開啟終端機。
+- `Ctrl+.`: 顯示建議、修復、重構程式碼。
 > 更多關於使用 VS Code 開發Flutter的建議請參考 [VSCode Shortcuts by Andrea](https://codewithandrea.com/articles/vscode-shortcuts-extensions-settings-flutter-development/)。
 
 
@@ -52,7 +53,7 @@
 1. Q: 分支之間要如何合併?   
    A: Source Control > 更多選項 (...) > Branches > Merge > 選擇要合併的分支。  
 2. Q: 如何退回到過去的版本? 要如何管理?  
-   A: 可以，Source Control > 更多選項 (...) > Commit > Undo Last Commit。培養 commit 頻繁的習慣可以追蹤變動歷程。
+   A: Source Control > 更多選項 (...) > Commit > Undo Last Commit。培養 commit 頻繁的習慣可以追蹤變動歷程。
 3. Q: 能不能移除過去以前的某一個 commit?  
    A: Source Control > GITLENS > 選擇要移除的 commit > 選擇 revert。
 4. Q: 如何檢視Git log輸出?  
