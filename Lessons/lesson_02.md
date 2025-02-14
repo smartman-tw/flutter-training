@@ -19,3 +19,7 @@
 5. **SingleChildScrollView**: 用來顯示滾動的元件。
 
 完整的元件列表請參考 [Flutter Widget Catalog](https://docs.flutter.dev/ui/widgets)。
+
+## VS Code 套件 (Extensions)
+1. Flutter: Flutter 官方提供的擴充功能。
+2. Flutter Widget Snippets: 可以快速建立 Stateful/Stateless widget。
