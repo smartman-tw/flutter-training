@@ -46,6 +46,8 @@
 - `Ctrl+點擊`: 跳到定義。
 - `Ctrl+~`: 開啟終端機。
 - `Ctrl+.`: 顯示建議、修復、重構程式碼。
+- `Ctrk+K > C`: 註解一致多行程式碼。
+- `Ctrl+K > U`: 取消註解一致多行程式碼。
 > 更多關於使用 VS Code 開發Flutter的建議請參考 [VSCode Shortcuts by Andrea](https://codewithandrea.com/articles/vscode-shortcuts-extensions-settings-flutter-development/)。
 
 
