@@ -11,4 +11,11 @@
 6. **Padding**: 用來設定元件的間距。
 7. **Center**: 用來將元件置中。
 
+## 排版元件 (參數都吃 children)
+1. **Column**: 垂直排列元件。(主軸為垂直)
+2. **Row**: 水平排列元件。(主軸為水平)
+3. **Wrap**: 自動換行排列元件。
+4. **ListView**: 用來顯示列表的元件。
+5. **SingleChildScrollView**: 用來顯示滾動的元件。
+
 完整的元件列表請參考 [Flutter Widget Catalog](https://docs.flutter.dev/ui/widgets)。
