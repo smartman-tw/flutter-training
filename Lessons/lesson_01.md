@@ -51,7 +51,10 @@
 - `Shift+Alt+F`: 格式化程式碼。
 > 更多關於使用 VS Code 開發Flutter的建議請參考 [VSCode Shortcuts by Andrea](https://codewithandrea.com/articles/vscode-shortcuts-extensions-settings-flutter-development/)。
 
-
+## VS Code 設定
+`Ctrl+,` 開啟設定，可以自訂 VS Code 的設定。若要套用到所有專案，請選擇`User`，若要套用到目前專案，請選擇`Workspace`。
+[User v.s. Workspace](https://code.visualstudio.com/docs/getstarted/settings)
+![alt text](settings.png)
 ## Q&A
 1. Q: 分支之間要如何合併?   
    A: Source Control > 更多選項 (...) > Branches > Merge > 選擇要合併的分支。  
