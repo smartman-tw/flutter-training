@@ -25,3 +25,5 @@
 3. 透過命令面板(command palette)：在 VS Code 按下 `Ctrl+Shift+P` > 輸入 `Add dependency` > 輸入 `faker` 後按下 Enter。
 
 
+## 使用圖片
+[Add assets and images](https://flutter.dev/docs/development/ui/assets-and-images)
