@@ -2,6 +2,15 @@
 
 ## Dart語言
 請參考 [Dart 語言官方文件](https://dart.dev/language)。
+- [Dart 不同的建構子](https://dart.dev/language/constructors)
+## What's new
+- Dart 3.7 以後尾行逗號(trailing comma)與換行排版(formatting)的邏輯有調整。先前是可以在程式碼中透過新增或移除trailling comma決定是否換行，3.7以後變成若元素只有一個時強制無法換行(就算手動補上trailing comma)，一個元素以上儲存後補上trailling comma並會自動換行。
+    > [Dart 3.7新排版](https://codewithandrea.com/articles/new-formatting-style-dart-3-7/)
+    > 在 pubspec.yaml 可以看到 Dart SDK 的版本。
+    ```yaml
+    environment:
+        sdk: ^3.6.0
+    ```
 ## 常用元件
 1. **Text**: 用來顯示文字。
 2. **Image**: 用來顯示圖片。
