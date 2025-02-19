@@ -33,6 +33,8 @@
 - **Fetch**: 從遠端存放庫拉取最新的分支。
 ### Git 操作關聯圖
 ![alt text](git.png)
+## Fetch v.s. Pull
+![alt text](fetch_and_pull.gif)
 ### VS Code
 - **terminal**: 終端機，可以在 VS Code 中執行指令。
 - **command palette**: 命令面板，可以在 VS Code 中執行指令。
