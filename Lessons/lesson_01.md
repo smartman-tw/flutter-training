@@ -32,9 +32,9 @@
 - **Pull**: 從遠端存放庫拉取最新的程式碼。
 - **Fetch**: 從遠端存放庫拉取最新的分支。
 ### Git 操作關聯圖
-![alt text](git.png)
+![alt text](images/git.png)
 ## Fetch v.s. Pull
-![alt text](fetch_and_pull.gif)
+![alt text](images/fetch_and_pull.gif)
 ### VS Code
 - **terminal**: 終端機，可以在 VS Code 中執行指令。
 - **command palette**: 命令面板，可以在 VS Code 中執行指令。
@@ -56,7 +56,7 @@
 ## VS Code 設定
 按下`Ctrl+,` 開啟設定(或是按左下角的齒輪>Settings也可)，可以自訂 VS Code 的設定。若要套用到所有專案，請選擇`User`，若要套用到目前專案，請選擇`Workspace`。
 [User v.s. Workspace](https://code.visualstudio.com/docs/getstarted/settings)
-![alt text](settings.png)
+![alt text](images/settings.png)
 ## Q&A
 1. Q: 分支之間要如何合併?   
    A: Source Control > 更多選項 (...) > Branches > Merge > 選擇要合併的分支。  
