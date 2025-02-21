@@ -18,4 +18,4 @@
 請試著用上述5種排版技巧，複製以下UberEats首頁的畫面:
 >圖片部分可以使用icons或色塊取代
 
-![alt text](images/ubereats_homepage.png)
+![alt text](Images/ubereats_homepage.png)

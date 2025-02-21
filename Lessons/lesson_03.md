@@ -6,7 +6,7 @@
 - `didUpdateWidget()`: 當 widget 參數改變時會被呼叫。(需要根據參數改變widget狀態時需override)
 - `build()`: 當任何狀態有改變時會被呼叫。(setState、initState、didUpdateWidget都會被觸發)
 - `dispose()`: 當 widget 被移除時會被呼叫。(有使用任何controller需要再這裡釋放)
-![alt text](images/life_cycle.png)
+![alt text](Images/life_cycle.png)
 ## 使用套件 (Packages)
 請參考官方說明 [Using Packages](https://docs.flutter.dev/packages-and-plugins/using-packages)
 ## 套件安裝三種方式
