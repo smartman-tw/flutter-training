@@ -14,8 +14,10 @@
 | `SingleChildScrollView` | 單一子元件滾動 | `scrollDirection` (滾動方向) |
 | `Spacer` | 自動填滿剩餘空間 |  |
 | `MediaQuery.of(context).size` | 取得螢幕尺寸 |  |
+## 常見問題:
+[Renderbox overflowed](https://stackoverflow.com/questions/49480051/flutter-dart-exceptions-caused-by-rendering-a-renderflex-overflowed)
 ## 練習
-請試著用上述5種排版技巧，複製以下UberEats首頁的畫面:
+請複製以下UberEats首頁的畫面:
 >圖片部分可以使用icons或色塊取代
 
 ![alt text](Images/ubereats_homepage.png)
