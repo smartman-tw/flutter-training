@@ -14,6 +14,8 @@
 | `SingleChildScrollView` | 單一子元件滾動 | `scrollDirection` (滾動方向) |
 | `Spacer` | 自動填滿剩餘空間 |  |
 | `MediaQuery.of(context).size` | 取得螢幕尺寸 |  |
+| `Positioned` | Stack中定位 | `top`, `bottom`, `left`, `right` |
+> 若要使用 Flutter 預設的 tab 可以參考 [Flutter Tab](https://docs.flutter.dev/cookbook/design/tabs)
 ## 常見問題:
 [Renderbox overflowed](https://stackoverflow.com/questions/49480051/flutter-dart-exceptions-caused-by-rendering-a-renderflex-overflowed)
 ## 練習
