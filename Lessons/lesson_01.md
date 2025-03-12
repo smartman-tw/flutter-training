@@ -57,6 +57,11 @@
 按下`Ctrl+,` 開啟設定(或是按左下角的齒輪>Settings也可)，可以自訂 VS Code 的設定。若要套用到所有專案，請選擇`User`，若要套用到目前專案，請選擇`Workspace`。
 [User v.s. Workspace](https://code.visualstudio.com/docs/getstarted/settings)
 ![alt text](Images/settings.png)
+## 模擬器新增 (Android emulator)
+若需要新增模擬器需要透過 Android Studio > Tools > Device Manager > Add a new device 去新增。  
+![alt text](Images/add_new_device.png)  
+可以選擇不同的裝置類型、型號與SDK。(但僅限於Google提供的裝置)
+![alt text](Images/device_manager.png)
 ## Q&A
 1. Q: 分支之間要如何合併?   
    A: Source Control > 更多選項 (...) > Branches > Merge > 選擇要合併的分支。  
