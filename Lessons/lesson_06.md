@@ -6,10 +6,6 @@
 ```bash
 flutter pub add flutter_riverpod
 ```
-## 概念
-* Provider: 狀態的提供者
-* Consumer: 狀態的使用者(消費者)，當狀態改變時會重新建構
-
 ## 使用 Riverpod
 ### 事前準備
 * 在 `main.dart` 中加入 `ProviderScope`
@@ -27,7 +23,9 @@ final typeProvider = Provider<List<String>>((ref) {
 });
 ```
 ### 使用 Provider
-* 將原本 `StatefulWidget` 改為 `ConsumerStatefulWidget`、或是 `StatelessWidget` 改為 `ConsumerWidget`。
+* 在 VS Code 安裝 Flutter Riverpod Snippets extension，就可以透過輸入`stlessConsumer` > 按下 tab 鍵快速建立一個 `ConsumerWidget`或是 `stfulConsumer` 來建立一個 `ConsumerStatefulWidget`。
+![alt text](Images/riverpod_snippet.png)
+    > 原本 `StatefulWidget` 對應為 `ConsumerStatefulWidget`、`StatelessWidget` 對應為 `ConsumerWidget`。
 * 使用 `ref.watch` 來監聽 Provider 的狀態。
 ```dart
 class FavoriteScreen extends ConsumerStatefulWidget {
@@ -53,9 +51,20 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
 // 紀錄搜尋字串
 final searchTermProvider = StateProvider<String>((ref) => '');
 ```
-若資料較複雜，可以使用 `StateNotifier` 來建立一個可以改變狀態的 Provider。
+```dart
+TextField(
+    decoration: InputDecoration(
+        hintText: '搜尋',
+    ),
+    onChanged: (value) {
+        // 改變搜尋字串
+        ref.read(searchTermProvider.notifier).state = value;
+    },
+)
+```
+若資料或邏輯較複雜，可以使用 `StateNotifier` 來建立一個可以改變狀態的 Provider。
 定義 `StateNotifier` 類別，並透過 `StateNotifierProvider` 來建立一個可以改變狀態的 Provider。
-
+> 什麼時候用 `StateNotifierProvider`? 當資料的格式是一個較複雜的型態如一個類別、包含額外的初始化邏輯或是需要進行較複雜的資料處理時。
 * 建立一個類別並 extends `StateNotifier`。`StateNotifier` 是一個泛型 (generic) 類別，可以在`<>`中指定要資料型態。`super` 則是呼叫父類別的建構子。以下的例子中，`super({})` 是呼叫父類別的建構子，並傳入一個空的 Map。
 
 * 改變狀態的是清除舊的資料，並重新建立新的資料。而不是直接修改資料。要更改資料，可以取得 `state` 並透過 `state =` 來改變資料。
@@ -155,6 +164,7 @@ final typeProvider = Provider<List<String>>((ref) {
   );
 });
 ```
+> * 範例中 `pokemons` 是一個 `AsyncValue`，可以透過 `when` 來取得資料、錯誤或是載入中的狀態。
 > * `expand` 是將 List 展開成多個元素，例如 `[[1, 2], [3, 4]]` 會變成 `[1, 2, 3, 4]`。程式碼為 `[[1, 2], [3, 4]].expand((list) => list)`。
 > * `toSet` 是將 List 轉換成 Set，Set 是一個不重複的集合，例如 `[1, 2, 3, 3].toSet()` 會變成 `{1, 2, 3}`。
 > * 最後透過 `toList` 將 Set 轉換成 List。
@@ -187,13 +197,13 @@ final filteredPokemonProvider = FutureProvider<List<Pokemon>>((ref) async {
 | FutureProvider | 單純提供一個非同步的資料 |
 | StateNotifierProvider | 提供較為複雜的資料 + 可以撰寫不同的修改邏輯 (side effects) |
 
-### 資料型態整理
+### 資料型態
 | 資料型態 | 用途 | 範例 |
 | -------- | ---- | ---- |
 | List | 一個有序的集合 | `[1, 1, 2, 3]` |
 | Set | 一個沒有重複的集合 | `{1, 2, 3}` |
 | Map | 一個 key-value 的集合 | `{'a': 1, 'b': 2}` |
-### 資料處理整理
+### 資料處理
 | 方法 | 用途 | 範例 | 結果 |
 | ---- | ---- | ---- | ---- |
 | where | 篩選元素 | `[1, 2, 3].where((n) => n > 2)` | `[3]` |
