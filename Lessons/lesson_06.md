@@ -1,6 +1,7 @@
 
 # Riverpod
-> [官方網站](https://riverpod.dev/)
+[官方網站](https://riverpod.dev/)
+> 同為 Riverpod 的開發者設計，在 Riverpod 以前另有 [Provider](https://pub.dev/packages/provider) 套件。可以參考 [Flutter 官方網站的簡易套件管理說明](https://pub.dev/packages/provider) 如何使用 Provider。
 ## 安裝
 在 Terminal 輸入以下指令
 ```bash
