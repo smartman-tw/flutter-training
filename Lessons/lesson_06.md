@@ -1,6 +1,6 @@
 
 # Riverpod
-
+> [官方網站](https://riverpod.dev/)
 ## 安裝
 在 Terminal 輸入以下指令
 ```bash
@@ -28,22 +28,19 @@ final typeProvider = Provider<List<String>>((ref) {
     > 原本 `StatefulWidget` 對應為 `ConsumerStatefulWidget`、`StatelessWidget` 對應為 `ConsumerWidget`。
 * 使用 `ref.watch` 來監聽 Provider 的狀態。
 ```dart
-class FavoriteScreen extends ConsumerStatefulWidget {
-  const FavoriteScreen({super.key});
+class FilterScreen extends ConsumerWidget {
+  const FilterScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _FavoriteScreenState();
-}
-class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
-  @override
-  Widget build(BuildContext context) {
-    // 取得最愛的餐點清單
-    final favoritePokemons = ref.watch(favoriteProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    // 取得所有的類型
+    final types = ref.watch(typeProvider);
     return Scaffold(
       // ...省略程式碼
     );
   }
 }
+
 ```
 ### 改變 Provider 的狀態
 若資料很簡單，可以使用 `StateProvider` 來建立一個可以改變狀態的 Provider。
@@ -51,6 +48,7 @@ class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
 // 紀錄搜尋字串
 final searchTermProvider = StateProvider<String>((ref) => '');
 ```
+* 使用 `ref.read` 來取得 Provider 的實例，並透過 `notifier` 來改變 Provider 的狀態。
 ```dart
 TextField(
     decoration: InputDecoration(
@@ -70,14 +68,27 @@ TextField(
 * 改變狀態的是清除舊的資料，並重新建立新的資料。而不是直接修改資料。要更改資料，可以取得 `state` 並透過 `state =` 來改變資料。
 * 最後透過 `StateNotifierProvider` 來建立一個可以改變狀態的 Provider。跟 Provider 類似，`StateNotifierProvider` 接受一個方法，並回傳一個 `StateNotifier` 的實例。同時 `StateNotifierProvider` 也是一個泛型類別，可以在 `<>` 中指定要資料型態。但需要指定兩個型態，第一個是 `StateNotifier` 的型態，第二個是 `StateNotifier` 的 `state` 的型態。
 ```dart
+// 建立 StateNotifier 類別，型態為 Map<String, bool>
 class SelectedTypes extends StateNotifier<Map<String, bool>> {
-  SelectedTypes(Ref ref) : super({});
+  late List<String> types;
+  SelectedTypes(Ref ref) : super({}) {
+    types = ref.watch(typeProvider);
+    state = {for (var type in types) type: true};
+  }
 
   void toggle(String type, bool selected) {
     state = {...state, type: selected};
   }
-}
 
+  void clear() {
+    state = {};
+  }
+
+  void selectAll() {
+    state = {for (var type in types) type: true};
+  }
+}
+// 建立 StateNotifierProvider，型態有兩個，第一個是 StateNotifier，第二個是 Map<String, bool>
 final selectedTypesProvider =
     StateNotifierProvider<SelectedTypes, Map<String, bool>>((ref) {
   return SelectedTypes(ref);
@@ -124,9 +135,9 @@ class SelectedTypes extends StateNotifier<Map<String, bool>> {
   // 紀錄所有的類型
   late List<String> types;
   SelectedTypes(Ref ref) : super({}) {
-    // 初始化所有的類型
+    // 取得所有的類型
     types = ref.watch(typeProvider);
-    // 預設所有的類型都是選擇的
+    // 初始化狀態
     state = {for (var type in types) type: true};
   }
 
@@ -142,7 +153,9 @@ class SelectedTypes extends StateNotifier<Map<String, bool>> {
     state = {for (var type in types) type: true};
   }
 }
+
 ```
+> * `late` 是延遲初始化，可以在建構子中初始化變數。在這個例子中，`types` 是一個 List，可以在建構子中初始化。
 > * 留意這裡不能夠 `state[type] = selected` 來改變狀態。因為狀態的改變不會觸發重新建構，所以 UI 不會更新。必須透過 `state = ` 來改變狀態。
 > * `Map` 是一個 key-value 的資料結構，可以透過 key 來取得 value。在這個例子中，`state` 是一個 `Map`，key 是類型的名稱，value 是是否選擇。`{for (var type in types) type: true}` 是一個 Map 的建立方式，`for (var type in types)` 會將 `types` 中的每一個元素取出來，並將元素指定為 `type`。`type: true` 是將 `type` 作為 key，`true` 作為 value 加入到 Map 中。
 
@@ -188,7 +201,10 @@ final filteredPokemonProvider = FutureProvider<List<Pokemon>>((ref) async {
   }).toList();
 });
 ```
-
+### 相關連結
+* [下拉更新](https://riverpod.dev/docs/case_studies/pull_to_refresh)
+* [避免事項](https://riverpod.dev/docs/essentials/do_dont)
+* [Riverpod 2.0 新語法](https://riverpod.dev/docs/migration/from_state_notifier)
 ### 不同的 Provider 整理
 | Provider | 用途 |
 | -------- | ---- |
