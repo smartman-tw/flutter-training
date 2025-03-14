@@ -22,232 +22,184 @@ void main() {
 ### 建立一個 Provider
 ```dart
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// 餐點資料 Provider
-final mealsProvider = Provider((ref) {
-    return //...省略程式碼
+final typeProvider = Provider<List<String>>((ref) {
+  return // ...回傳資料 (List<String>)
 });
 ```
 ### 使用 Provider
 * 將原本 `StatefulWidget` 改為 `ConsumerStatefulWidget`、或是 `StatelessWidget` 改為 `ConsumerWidget`。
-    > 這個動作可以透過 VS Code 的 Flutter Riverpod Snippet extension 快速完成。按下 `Ctrl + .` 就可以自動轉換。
 * 使用 `ref.watch` 來監聽 Provider 的狀態。
 ```dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-class TabScreen extends ConsumerStatefulWidget {
-    const TabScreen({super.key});
+class FavoriteScreen extends ConsumerStatefulWidget {
+  const FavoriteScreen({super.key});
 
-    @override
-    _TabScreenState createState() => _TabScreenState();
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _FavoriteScreenState();
 }
-
-class _TabScreenState extends ConsumerState<TabScreen> {
-    @override
-    Widget build(BuildContext context) {
-        // 取得餐點清單
-        final meals = ref.watch(mealsProvider);
-        // ...省略程式碼
-    }
+class _FavoriteScreenState extends ConsumerState<FavoriteScreen> {
+  @override
+  Widget build(BuildContext context) {
+    // 取得最愛的餐點清單
+    final favoritePokemons = ref.watch(favoriteProvider);
+    return Scaffold(
+      // ...省略程式碼
+    );
+  }
 }
 ```
 ### 改變 Provider 的狀態
+若資料很簡單，可以使用 `StateProvider` 來建立一個可以改變狀態的 Provider。
+```dart
+// 紀錄搜尋字串
+final searchTermProvider = StateProvider<String>((ref) => '');
+```
+若資料較複雜，可以使用 `StateNotifier` 來建立一個可以改變狀態的 Provider。
 定義 `StateNotifier` 類別，並透過 `StateNotifierProvider` 來建立一個可以改變狀態的 Provider。
 
-* 建立一個類別並 extends `StateNotifier`。`StateNotifier` 是一個泛型 (generic) 類別，可以在`<>`中指定要資料型態。`super` 則是呼叫父類別的建構子。以下的例子中，`super([])` 是呼叫父類別的建構子，並傳入一個空的 List 來初始化空的餐點清單。
+* 建立一個類別並 extends `StateNotifier`。`StateNotifier` 是一個泛型 (generic) 類別，可以在`<>`中指定要資料型態。`super` 則是呼叫父類別的建構子。以下的例子中，`super({})` 是呼叫父類別的建構子，並傳入一個空的 Map。
+
 * 改變狀態的是清除舊的資料，並重新建立新的資料。而不是直接修改資料。要更改資料，可以取得 `state` 並透過 `state =` 來改變資料。
 * 最後透過 `StateNotifierProvider` 來建立一個可以改變狀態的 Provider。跟 Provider 類似，`StateNotifierProvider` 接受一個方法，並回傳一個 `StateNotifier` 的實例。同時 `StateNotifierProvider` 也是一個泛型類別，可以在 `<>` 中指定要資料型態。但需要指定兩個型態，第一個是 `StateNotifier` 的型態，第二個是 `StateNotifier` 的 `state` 的型態。
 ```dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:meal_app/models/meal.dart';
-class FavoriteMealsNotifier extends StateNotifier<List<Meal>> {
-    FavoriteMealsNotifier() : super([]);
-    // 切換餐點的最愛狀態
-    void toggleMealFavoriteStatus(Meal meal) {
-        final mealIsFavorite = state.contains(meal);
-        if (mealIsFavorite) {
-            state = state.where((m) => m.id != m.id).toList();
-        } else {
-            state = [...state, meal];
-        }
-    }
+class SelectedTypes extends StateNotifier<Map<String, bool>> {
+  SelectedTypes(Ref ref) : super({});
+
+  void toggle(String type, bool selected) {
+    state = {...state, type: selected};
+  }
 }
 
-final favoriteMealsProvider = StateNotifierProvider<FavoriteMealsNotifier, List<Meal>>((ref) {
-    return FavoriteMealsNotifier();
+final selectedTypesProvider =
+    StateNotifierProvider<SelectedTypes, Map<String, bool>>((ref) {
+  return SelectedTypes(ref);
 });
 ```
-> `...` 是展開運算子 (Spread operator)，可以將 List 展開成多個元素。如 `[...[1, 2], 3]` 會變成 `[1, 2, 3]`。
+> `...` 是展開運算子 (Spread operator)，可以將 List 展開成多個元素。如 `[...[1, 2], 3]` 會變成 `[1, 2, 3]` 或是展開 Map 成多個 key-value 對。如 `{...{'a': 1, 'b': 2}, 'c': 3}` 會變成 `{'a': 1, 'b': 2, 'c': 3}`。
 
 * 使用 `ref.read` 來取得 Provider 的實例，並透過 `notifier` 來呼叫 Provider 中的方法。
 ```dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-class MealDetailsScreen extends ConsumerWidget {
-    final Meal meal;
-    const MealDetailsScreen({super.key, required this.meal});
-
-    @override
-    Widget build(BuildContext context, WidgetRef ref) {
-        return Scaffold(
-            // ...省略程式碼
-            body: Column(
-                children: [
-                    Image.network(meal.imageUrl),
-                    // ...省略程式碼
-                    IconButton(
-                        icon: Icon(Icons.favorite),
-                        onPressed: () {
-                            ref.read(favoriteMealsProvider.notifier).toggleMealFavoriteStatus(meal);
-                        },
-                    ),
-                ],
-            ),
-        );
-    }
+// ...省略程式碼
+class _PokemonDetailScreenState extends ConsumerState<PokemonDetailScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.pokemon.name),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {
+              // 切換是否為最愛
+              ref.read(favoriteProvider.notifier).toggle(widget.pokemon);
+            },
+            // 依照是否為最愛來改變顏色
+            color: ref
+                    .watch(favoriteProvider)
+                    .where((p) => p.id == widget.pokemon.id)
+                    .isNotEmpty
+                ? Colors.red
+                : null,
+          ),
+        ],
+      ),
+      // ...省略程式碼
+    );
+  }
 }
+
 ```
 ### 利用 Provider 的資料初始化 Widget
-以下定義一個飲食篩選的 Provider:
+
 ```dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-// 飲食篩選enum: 無麩質、無乳製品、素食、純素
-enum Filter { GlutenFree, LactoseFree, Vegetarian, Vegan }
+class SelectedTypes extends StateNotifier<Map<String, bool>> {
+  // 紀錄所有的類型
+  late List<String> types;
+  SelectedTypes(Ref ref) : super({}) {
+    // 初始化所有的類型
+    types = ref.watch(typeProvider);
+    // 預設所有的類型都是選擇的
+    state = {for (var type in types) type: true};
+  }
 
-class FiltersNotifier extends StateNotifier<Map<Filter, bool>> {
-    FiltersNotifier() : super({
-        Filter.GlutenFree: false,
-        Filter.LactoseFree: false,
-        Filter.Vegetarian: false,
-        Filter.Vegan: false,
-    });
-    // 設定飲食篩選
-    void setFilter(Filter filter, bool isActive) {
-        state = {...state, filter: isActive};
-    }
-    void setFilters(Map<Filter, bool> filters) {
-        state = filters;
-    }
-}
+  void toggle(String type, bool selected) {
+    state = {...state, type: selected};
+  }
 
-final filtersProvider = StateNotifierProvider<FiltersNotifie, Map<Filter, bool>>((ref) => FiltersNotifier());
-```
-> * 留意這裡不能夠 `state[filter] = isActive` 來改變狀態。
-> * `Map` 是一個 key-value 的資料結構，可以透過 key 來取得 value。在這個例子中，`Filter` 是 key 的型態，`bool` 是 value 的型態。
+  void clear() {
+    state = {};
+  }
 
-底下在 `initState` 中取得 Provider 的狀態 (透過`ref.read`)，並在 `WillPopScope` 中將飲食篩選的狀態儲存。
-```dart
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-class FiltersScreen extends ConsumerStatefulWidget {
-    const FiltersScreen({super.key});
-
-    @override
-    _FiltersScreenState createState() => _FiltersScreenState();
-}
-
-class _FiltersScreenState extends ConsumerState<FiltersScreen> {
-    // 四個飲食篩選去改變UI
-    var _glutenFree = false;
-    var _lactoseFree = false;
-    var _vegetarian = false;
-    var _vegan = false;
-    @override
-    void initState() {
-        super.initState();
-        // 取得目前的飲食篩選
-        final activeFilters = ref.read(filtersProvider);
-        _glutenFree = activeFilters[Filter.GlutenFree];
-        _lactoseFree = activeFilters[Filter.LactoseFree];
-        _vegetarian = activeFilters[Filter.Vegetarian];
-        _vegan = activeFilters[Filter.Vegan];
-    }
-    @override
-    Widget build(BuildContext context) {
-        final filters = ref.watch(filtersProvider);
-        return Scaffold(
-            // ...省略程式碼
-            body: WillPopScope(
-                onWillPop: () async {
-                    ref.read(filtersProvider.notifier).setFilters({
-                        Filter.GlutenFree: _glutenFree,
-                        Filter.LactoseFree: _lactoseFree,
-                        Filter.Vegetarian: _vegetarian,
-                        Filter.Vegan: _vegan,
-                    });
-                    return true;
-                },
-                child: Column(
-                    children: [
-                        // ...省略程式碼
-                    ],
-                ),
-            ),
-        );
-    }
+  void selectAll() {
+    state = {for (var type in types) type: true};
+  }
 }
 ```
-> 留意在 `initState` 中只能使用 `ref.read` 來取得 Provider 的狀態，而不能使用 `ref.watch`。
+> * 留意這裡不能夠 `state[type] = selected` 來改變狀態。因為狀態的改變不會觸發重新建構，所以 UI 不會更新。必須透過 `state = ` 來改變狀態。
+> * `Map` 是一個 key-value 的資料結構，可以透過 key 來取得 value。在這個例子中，`state` 是一個 `Map`，key 是類型的名稱，value 是是否選擇。`{for (var type in types) type: true}` 是一個 Map 的建立方式，`for (var type in types)` 會將 `types` 中的每一個元素取出來，並將元素指定為 `type`。`type: true` 是將 `type` 作為 key，`true` 作為 value 加入到 Map 中。
 
-### 將狀態的權責都交給 Provider
-將狀態的權責都交給 Provider 可以讓 Widget 只需要負責 UI 的呈現而不需要管理狀態。
-* 改使用 `ConsumerStatefulWidget` 來取得 Provider 的狀態。
-* 使用 `ref.watch` 來監聽 Provider 的狀態。
-```dart
-class FiltersScreen extends ConsumerStatefulWidget {
-    const FiltersScreen({super.key});
 
-    @override
-    _FiltersScreenState createState() => _FiltersScreenState();
-}
-
-class _FiltersScreenState extends ConsumerState<FiltersScreen> {
-    @override
-    Widget build(BuildContext context) {
-        return Scaffold(
-            // ...省略程式碼
-            body: WillPopScope(
-                // ...省略程式碼
-                child: Column(
-                    children: [
-                        SwitchListTile(
-                            title: Text('無麩質'),
-                            subtitle: Text('只顯示無麩質食物'),
-                            // 監聽篩選狀態
-                            value: ref.watch(filtersProvider)[Filter.GlutenFree],
-                            onChanged: (newValue) {
-                                // 改變單一飲食篩選狀態
-                                ref.read(filtersProvider.notifier).setFilter(Filter.GlutenFree, newValue);
-                            },
-                        ),
-                        // ...省略程式碼
-                    ],
-                ),
-            ),
-        );
-    }
-}
-```
 
 ### 當一個 Provider 需要 (依賴) 另一個 Provider 的狀態
 可以透過 `ref` 來取得其他 Provider 的狀態。
 ```dart
-// 過濾後的餐點 Provider
-final filteredMealsProvider = Provider((ref) {
-    final meals = ref.watch(mealsProvider);
-    final filters = ref.watch(filtersProvider);
+final typeProvider = Provider<List<String>>((ref) {
+  final pokemons = ref.watch(pokemonProvider);
 
-    return meals.where((meal) {
-        if (filters[Filter.GlutenFree] && !meal.isGlutenFree) {
-            return false;
-        }
-        if (filters[Filter.LactoseFree] && !meal.isLactoseFree) {
-            return false;
-        }
-        if (filters[Filter.Vegetarian] && !meal.isVegetarian) {
-            return false;
-        }
-        if (filters[Filter.Vegan] && !meal.isVegan) {
-            return false;
-        }
-        return true;
-    }).toList();
+  return pokemons.when(
+    data: (pokemons) => pokemons
+        .expand((pokemon) => pokemon.types)
+        .toSet()
+        .toList(), // 取得所有的類型並去除重複
+    loading: () => [],
+    error: (err, stack) => [],
+  );
 });
 ```
+> * `expand` 是將 List 展開成多個元素，例如 `[[1, 2], [3, 4]]` 會變成 `[1, 2, 3, 4]`。程式碼為 `[[1, 2], [3, 4]].expand((list) => list)`。
+> * `toSet` 是將 List 轉換成 Set，Set 是一個不重複的集合，例如 `[1, 2, 3, 3].toSet()` 會變成 `{1, 2, 3}`。
+> * 最後透過 `toList` 將 Set 轉換成 List。
+```dart
+// 篩選後的寶可夢資料
+final filteredPokemonProvider = FutureProvider<List<Pokemon>>((ref) async {
+  // 取得所有寶可夢資料
+  final pokemons = await ref.watch(pokemonProvider.future);
+  // 取得選擇的類型
+  final selectedTypes = ref.watch(selectedTypesProvider);
+  // 取得搜尋字串
+  final searchTerm = ref.watch(searchTermProvider);
+  // 篩選寶可夢
+  return pokemons.where((pokemon) {
+    // 檢查是否符合類型
+    final matchesTypes =
+        pokemon.types.any((type) => selectedTypes[type] ?? false);
+    // 檢查是否符合搜尋字串
+    final matchesSearchTerm = pokemon.name.contains(searchTerm);
+    return matchesTypes && matchesSearchTerm;
+  }).toList();
+});
+```
+
+### 不同的 Provider 整理
+| Provider | 用途 |
+| -------- | ---- |
+| Provider | 單純提供資料 |
+| StateProvider | 提供資料 + 單純對單一值修改 |
+| FutureProvider | 單純提供一個非同步的資料 |
+| StateNotifierProvider | 提供較為複雜的資料 + 可以撰寫不同的修改邏輯 (side effects) |
+
+### 資料型態整理
+| 資料型態 | 用途 | 範例 |
+| -------- | ---- | ---- |
+| List | 一個有序的集合 | `[1, 1, 2, 3]` |
+| Set | 一個沒有重複的集合 | `{1, 2, 3}` |
+| Map | 一個 key-value 的集合 | `{'a': 1, 'b': 2}` |
+### 資料處理整理
+| 方法 | 用途 | 範例 | 結果 |
+| ---- | ---- | ---- | ---- |
+| where | 篩選元素 | `[1, 2, 3].where((n) => n > 2)` | `[3]` |
+| contains | 檢查是否包含某個元素 | `'hello'.contains('he')` | `true` |
+| toSet | 將 List 轉換成 Set | `[1, 2, 3, 3].toSet()` | `{1, 2, 3}` |
+| toList | 將 Set 轉換成 List | `{1, 2, 3}.toList()` | `[1, 2, 3]` |
+| any | 檢查是否有任何一個元素符合條件 | `[1, 2, 3].any((n) => n > 2)` | `true` |
+| expand | 將 List 展開成多個元素 | `[[1, 2], [3, 4]].expand((list) => list)` | `[1, 2, 3, 4]` |
+| `...` | 展開運算子 | `{...{'a': 1, 'b': 2}, 'c': 3}` | `{'a': 1, 'b': 2, 'c': 3}` |
